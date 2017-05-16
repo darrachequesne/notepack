@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "files": [
     "lib/",
-    "dist/"
+    "browser/"
   ],
   "repository": {
     "type": "git",
@@ -32,5 +32,9 @@
     "test-cov": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- -r ./test/support/env -R dot ./test",
     "test-travis": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -r ./test/support/env -R spec ./test",
     "build": "rm -rf dist && ./node_modules/.bin/webpack --config support/webpack.config.js"
+  },
+  "browser": {
+    "./lib/encode.js": "./browser/encode.js",
+    "./lib/decode.js": "./browser/decode.js"
   }
 }

@@ -27,7 +27,7 @@ var decoded = notepack.decode(encoded); // { foo: 'bar' }
 
 ## Browser
 
-A browser version of notepack is also available (29.5 kB minified)
+A browser version of notepack is also available (7.6 kB minified)
 
 ```html
 <script src="https://rawgit.com/darrachequesne/notepack/master/dist/notepack.js"></script>

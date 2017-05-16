@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>notepack</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="../dist/notepack.js"></script>
+    <script type="text/javascript">
+      function array (length) {
+        var arr = new Array(length);
+        for (var i = 0; i < arr.length; i++) {
+          arr[i] = 0;
+        }
+        return arr;
+      }
+      function map (length) {
+        var result = {};
+        for (var i = 0; i < length; i++) {
+          result[i + ''] = 0;
+        }
+        return result;
+      }
+      function createArrayBuffer (str) {
+        return (new Uint8Array([].map.call(str, function (x) { return x.charCodeAt(0); }))).buffer;
+      }
+
+      var expected = {
+        '01_unsigned': [1, 2, 3, 4, { b: { c: [128, 256, 65536, 4294967296] } }],
+        '02_signed': [-1, -2, -3, -4, { b: { c: [-33, -129, -32769, -2147483649] } }],
+        '03_bin': [createArrayBuffer('abc'), createArrayBuffer('a'.repeat(256)), createArrayBuffer('c'.repeat(65536))],
+        '04_str': ['abc', 'g'.repeat(32), 'h'.repeat(256), 'i'.repeat(65536)],
+        '05_array': [[], array(16), array(65536)],
+        '06_map': {},
+        '07_nil': null,
+        '08_bool': { 'true': true, 'false': false, both: [true, false, false, false, true] },
+        '09_fixext': [undefined, new Date('2140-01-01T13:14:15.678Z'), undefined, new Date('2005-12-31T23:59:59.999Z')],
+        '10_utf8': ['α', '亜', '\uD83D\uDC26'],
+        '11_float': [1.1, 1234567891234567.5]
+      };
+      expected['06_map']['a'.repeat(32)] = { a: 'a', b: 'b', c: 'c' };
+      expected['06_map']['b'.repeat(256)] = { a: { b: 1, c: 1, d: 1, e: { f: { g: 2, h: 2 } } } };
+      expected['06_map']['c'.repeat(65536)] = [{ a: { b: 1, c: 1, d: 1, e: { f: [{ g: 2, h: 2 }] } } }];
+      expected['12_map16'] = map(65535);
+      expected['13_map32'] = map(65536);
+
+      console.log(notepack.decode(notepack.encode(expected)));
+    </script>
+
+  </body>
+</html>
