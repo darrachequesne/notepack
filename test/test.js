@@ -90,19 +90,23 @@ describe('notepack', function () {
     check(new Buffer('a'.repeat(65536)), 'c6' + '00010000' + '61'.repeat(65536));
   });
 
-  // ext 8, ext 16, ext 32
-  // There is currently no way to encode extension types
-
   it('ext 8', function () {
     checkDecode([127, new Buffer('hello')], 'c7' + '05' + '7f' + '68656c6c6f');
+    check(Uint8Array.of(1, 2, 3, 4).buffer, 'c7' + '04' + '00' + '01020304');
   });
 
   it('ext 16', function () {
-    checkDecode([0, new Buffer('a'.repeat(256))], 'c8' + '0100' + '00' + '61'.repeat(256));
+    checkDecode([1, new Buffer('a'.repeat(256))], 'c8' + '0100' + '01' + '61'.repeat(256));
+    var array = new Uint8Array(256);
+    array.fill(8);
+    check(array.buffer, 'c8' + '0100' + '00' + '08'.repeat(256));
   });
 
   it('ext 32', function () {
     checkDecode([-128, new Buffer('a'.repeat(65536))], 'c9' + '00010000' + '80' + '61'.repeat(65536));
+    var array = new Uint8Array(65536);
+    array.fill(9);
+    check(array.buffer, 'c9' + '00010000' + '00' + '09'.repeat(65536));
   });
 
   // float 32
