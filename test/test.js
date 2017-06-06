@@ -122,6 +122,9 @@ describe('notepack', function () {
   it('float 64', function () {
     check(1.1, 'cb' + '3ff199999999999a');
     check(1234567891234567.5, 'cb' + '43118b54f26ebc1e');
+    check(Infinity, 'cb' + '7ff0000000000000');
+    check(-Infinity, 'cb' + 'fff0000000000000');
+    check(NaN, 'cb' + '7ff8000000000000');
   });
 
   it('uint 8', function () {
