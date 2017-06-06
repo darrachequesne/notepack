@@ -82,14 +82,10 @@ function _encode(bytes, defers, value) {
     return size + length;
   }
   if (type === 'number') {
-    if (!isFinite(value)) {
-      throw new Error('Number is not finite');
-    }
-
     // TODO: encode to float 32?
 
     // float 64
-    if (Math.floor(value) !== value) {
+    if (Math.floor(value) !== value || !isFinite(value)) {
       bytes.push(0xcb);
       defers.push({ float: value, length: 8, offset: bytes.length });
       return 9;
@@ -296,7 +292,7 @@ function encode(value) {
       }
     } else if (defer.str) {
       utf8Write(view, offset, defer.str);
-    } else if (defer.float) {
+    } else if (defer.float !== undefined) {
       view.setFloat64(offset, defer.float);
     }
     deferIndex++;
