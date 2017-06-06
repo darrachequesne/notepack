@@ -295,10 +295,15 @@ describe('notepack', function () {
     expect(notepack.decode(notepack.encode(fixture))).to.deep.equal(fixture);
   });
 
-  [NaN, Infinity, -Infinity].forEach( function (value) {
-    it(value.toString(), function () {
-      expect(notepack.decode(notepack.encode(value))).to.equal(null);
-    });
+  it('Infinity', function () {
+    expect(notepack.decode(notepack.encode(Infinity))).to.equal(Infinity);
   });
 
+  it('-Infinity', function () {
+    expect(notepack.decode(notepack.encode(-Infinity))).to.equal(-Infinity);
+  });
+
+  it('NaN', function () {
+    expect(notepack.decode(notepack.encode(NaN))).to.be.nan;
+  });
 });
