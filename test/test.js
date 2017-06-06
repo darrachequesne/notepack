@@ -294,4 +294,16 @@ describe('notepack', function () {
 
     expect(notepack.decode(notepack.encode(fixture))).to.deep.equal(fixture);
   });
+
+  it('Infinity', function () {
+    expect(notepack.decode(notepack.encode(Infinity))).to.equal(Infinity);
+  });
+
+  it('-Infinity', function () {
+    expect(notepack.decode(notepack.encode(-Infinity))).to.equal(-Infinity);
+  });
+
+  it('NaN', function () {
+    expect(notepack.decode(notepack.encode(NaN))).to.be.nan;
+  });
 });
