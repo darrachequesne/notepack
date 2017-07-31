@@ -34,6 +34,27 @@ function check(value, hex) {
   expect(notepack.decode(notepack.encode(value))).to.deep.equal(value);
 }
 
+// evaluate toJSON recursively
+function jsonify(o)
+{
+  if (o === null ||
+    typeof o !== 'object' ||
+    Array.isArray(o) ||
+    o instanceof Date ||
+    o instanceof Buffer ||
+    o instanceof ArrayBuffer)
+    return o;
+
+  if (typeof o.toJSON === 'function')
+    return jsonify(o.toJSON());
+
+  var allKeys = Object.keys(o);
+  for (var k of allKeys)
+    o[k] = jsonify(o[k]);
+
+  return o;
+}
+
 describe('notepack', function () {
   this.timeout(10000);
 
@@ -293,5 +314,43 @@ describe('notepack', function () {
     var fixture = require('./fixtures/10000.json');
 
     expect(notepack.decode(notepack.encode(fixture))).to.deep.equal(fixture);
+  });
+
+  it('toJSON', function () {
+     var o1 = {
+       nil: null,
+       number: 5,
+       string: 'hello world',
+       arr: [1,2,3],
+       date: new Date(),
+       buf: new Buffer(0),
+       sub_obj: {
+         a: 'a',
+         b: 'b',
+         toJSON: function()
+         {
+           return new Date();
+         }
+       },
+       sub_obj2: {
+         toJSON: function()
+         {
+           return 'surprise!!';
+         }
+       },
+       exclude: 'exclude me!',
+       toJSON: function()
+       {
+         return {
+           nil: this.nil,
+           number: this.number,
+           string: this.string,
+           arr: this.arr,
+           date: this.date,
+           buf: this.buf
+         };
+       }
+     };
+   expect(notepack.decode(notepack.encode(o1))).to.deep.equal(jsonify(o1));
   });
 });
