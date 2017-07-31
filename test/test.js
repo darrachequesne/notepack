@@ -268,7 +268,18 @@ describe('notepack', function () {
     expect(notepack.decode(encoded)).to.deep.equal(map32);
   });
 
+  it('toJSON', function () {
+    var obj = {
+      a: 'b',
+      toJSON: function () {
+        return 'c';
+      }
+    }
+    expect(notepack.encode(obj)).to.deep.equal(notepack.encode('c'));
+  });
+
   it('all formats', function () {
+    this.timeout(20000);
     var expected = {
       unsigned: [1, 2, 3, 4, { b: { c: [128, 256, 65536, 4294967296] } }],
       signed: [-1, -2, -3, -4, { b: { c: [-33, -129, -32769, -2147483649] } }],
