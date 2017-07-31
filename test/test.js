@@ -333,22 +333,22 @@ describe('notepack', function () {
          }
        },
        sub_obj2: {
-           toJSON: function()
-           {
-               return 'surprise!!';
-           }
+         toJSON: function()
+         {
+           return 'surprise!!';
+         }
        },
        exclude: 'exclude me!',
        toJSON: function()
        {
-       return {
-         nil: this.nil,
-         number: this.number,
-         string: this.string,
-         arr: this.arr,
-         date: this.date,
-         buf: this.buf
-           };
+         return {
+           nil: this.nil,
+           number: this.number,
+           string: this.string,
+           arr: this.arr,
+           date: this.date,
+           buf: this.buf
+         };
        }
      };
    expect(notepack.decode(notepack.encode(o1))).to.deep.equal(jsonify(o1));
