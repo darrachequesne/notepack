@@ -55,6 +55,7 @@
   "devel"         : false,
   "dojo"          : false,
   "jquery"        : false,
+  "mocha"         : true,
   "mootools"      : false,
   "node"          : true,
   "nonstandard"   : false,
@@ -64,5 +65,8 @@
   "wsh"           : false,
   "yui"           : false,
 
-  "globals"       : {}
+
+  "globals"       : {
+    "expect": true
+  }
 }

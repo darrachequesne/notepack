@@ -1,3 +1,5 @@
+'use strict';
+
 var notepack = require('../');
 
 function array(length) {
@@ -113,7 +115,7 @@ describe('notepack', function () {
   // JavaScript doesn't support single precision floating point numbers
 
   it('float 32', function () {
-    var buf = Buffer(5);
+    var buf = new Buffer(5);
     buf.writeUInt8(0xca, 0);
     buf.writeFloatBE(0.5, 1);
     checkDecode(0.5, buf.toString('hex'));
@@ -274,7 +276,7 @@ describe('notepack', function () {
       toJSON: function () {
         return 'c';
       }
-    }
+    };
     expect(notepack.encode(obj)).to.deep.equal(notepack.encode('c'));
   });
 

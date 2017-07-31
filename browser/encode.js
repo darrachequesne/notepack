@@ -51,7 +51,7 @@ function utf8Length(str) {
 }
 
 function _encode(bytes, defers, value) {
-  var type = typeof value, hi = 0, lo = 0, length = 0, size = 0;
+  var type = typeof value, i = 0, l = 0, hi = 0, lo = 0, length = 0, size = 0;
 
   if (type === 'string') {
     length = utf8Length(value);
@@ -222,7 +222,7 @@ function _encode(bytes, defers, value) {
     var keys = [], key = '';
 
     var allKeys = Object.keys(value);
-    for (var i = 0, l = allKeys.length; i < l; i++) {
+    for (i = 0, l = allKeys.length; i < l; i++) {
       key = allKeys[i];
       if (typeof value[key] !== 'function') {
         keys.push(key);
@@ -248,7 +248,7 @@ function _encode(bytes, defers, value) {
       throw new Error('Object too large');
     }
 
-    for (var i = 0; i < length; i++) {
+    for (i = 0; i < length; i++) {
       key = keys[i];
       size += _encode(bytes, defers, key);
       size += _encode(bytes, defers, value[key]);
