@@ -37,22 +37,22 @@ function check(value, hex) {
 // evaluate toJSON recursively
 function jsonify(o)
 {
-	if (o === null ||
-		typeof o !== 'object' ||
-		Array.isArray(o) ||
-		o instanceof Date ||
-		o instanceof Buffer ||
-		o instanceof ArrayBuffer)
-		return o;
+  if (o === null ||
+    typeof o !== 'object' ||
+    Array.isArray(o) ||
+    o instanceof Date ||
+    o instanceof Buffer ||
+    o instanceof ArrayBuffer)
+    return o;
 
-	if (typeof o.toJSON === 'function')
-		return jsonify(o.toJSON());
+  if (typeof o.toJSON === 'function')
+    return jsonify(o.toJSON());
 
-	var allKeys = Object.keys(o);
-	for (var k of allKeys)
-		o[k] = jsonify(o[k]);
+  var allKeys = Object.keys(o);
+  for (var k of allKeys)
+    o[k] = jsonify(o[k]);
 
-	return o;
+  return o;
 }
 
 describe('notepack', function () {
@@ -341,16 +341,16 @@ describe('notepack', function () {
        exclude: 'exclude me!',
        toJSON: function()
        {
-		   return {
-			   nil: this.nil,
-			   number: this.number,
-			   string: this.string,
-			   arr: this.arr,
-			   date: this.date,
-			   buf: this.buf
+       return {
+         nil: this.nil,
+         number: this.number,
+         string: this.string,
+         arr: this.arr,
+         date: this.date,
+         buf: this.buf
            };
        }
      };
-	 expect(notepack.decode(notepack.encode(o1))).to.deep.equal(jsonify(o1));
+   expect(notepack.decode(notepack.encode(o1))).to.deep.equal(jsonify(o1));
   });
 });
