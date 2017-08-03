@@ -4,12 +4,13 @@ function Decoder(buffer) {
   this.offset = 0;
   if (buffer instanceof ArrayBuffer) {
     this.buffer = buffer;
+    this.view = new DataView(this.buffer);
   } else if (ArrayBuffer.isView(buffer)) {
     this.buffer = buffer.buffer;
+    this.view = new DataView(this.buffer, buffer.byteOffset, buffer.byteLength);
   } else {
     throw new Error('Invalid argument');
   }
-  this.view = new DataView(buffer);
 }
 
 function utf8Read(view, offset, length) {
