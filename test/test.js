@@ -1,6 +1,8 @@
 'use strict';
 
 var notepack = require('../');
+var notepackBrowser = { encode : require('../browser/encode.js'),
+                        decode : require('../browser/decode.js') };
 
 function array(length) {
   var arr = new Array(length);
@@ -306,5 +308,25 @@ describe('notepack', function () {
     var fixture = require('./fixtures/10000.json');
 
     expect(notepack.decode(notepack.encode(fixture))).to.deep.equal(fixture);
+  });
+});
+
+describe('notepack browser', function() {
+  it('ArrayBuffer view', function() {
+    expect(notepackBrowser.decode(Uint8Array.from([ 0x93, 1, 2, 3 ]))).to.deep.equal([ 1, 2, 3 ]);
+  });
+
+  it('offset ArrayBuffer view', function() {
+    var buffer = new ArrayBuffer(14);
+    var view = new Uint8Array(buffer);
+
+    // Fill with junk before setting the encoded data
+    view.fill(0xFF);
+
+    // Put the encoded data somewhere in the middle of the buffer
+    view.set([ 0x93, 1, 2, 3 ], 4);
+
+    expect(notepackBrowser.decode(new Uint8Array(buffer, 4, 4))).to.deep.equal([ 1, 2, 3 ]);
+    expect(notepackBrowser.decode(new Uint16Array(buffer, 4, 2))).to.deep.equal([ 1, 2, 3 ]);
   });
 });
