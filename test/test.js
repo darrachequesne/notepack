@@ -147,6 +147,9 @@ describe('notepack', function () {
   it('uint 64', function () {
     check(4294967296, 'cf0000000100000000');
     check(Math.pow(2, 53) - 1, 'cf001fffffffffffff');
+    // unsafe unsigned integer
+    check(Math.pow(2, 63), 'cf8000000000000000');
+    check(Math.pow(2, 63) + 1024, 'cf8000000000000000');
   });
 
   // NOTE: We'll always encode a positive number as a uint, but we should be
@@ -197,6 +200,9 @@ describe('notepack', function () {
     check(-7840340234323423, 'd3ffe42540896a3a21');
     // Minimum safe signed integer
     check(-Math.pow(2, 53) + 1, 'd3ffe0000000000001');
+    // unsafe signed integer
+    check(-Math.pow(2, 63), 'd38000000000000000');
+    check(-Math.pow(2, 63) - 1024, 'd38000000000000000');
   });
 
   it('fixext 1 / undefined', function () {

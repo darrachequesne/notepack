@@ -1,7 +1,5 @@
 'use strict';
 
-var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
-
 function utf8Write(view, offset, str) {
   var c = 0;
   for (var i = 0, l = str.length; i < l; i++) {
@@ -89,10 +87,6 @@ function _encode(bytes, defers, value) {
       bytes.push(0xcb);
       defers.push({ float: value, length: 8, offset: bytes.length });
       return 9;
-    }
-
-    if (Math.abs(value) > MAX_SAFE_INTEGER) {
-      throw new Error('Integer is unsafe');
     }
 
     if (value >= 0) {
