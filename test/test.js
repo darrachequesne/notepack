@@ -18,9 +18,28 @@ function map(length) {
   return result;
 }
 
+// Used to convert ArrayBuffers and non-Buffer typed arrays to Buffers before
+// they're used in a decoding comparison. This addresses several issues:
+//
+// 1.) The decode function can decode to an ArrayBuffer but won't preserve the
+//     original type if a non-Buffer typed array was passed to encode
+// 2.) The test suite's comparison functions don't work correctly with
+//     ArrayBuffers but do work with typed arrays
+function normalizeArrayBuffer(value) {
+  if (value instanceof ArrayBuffer) {
+    return new Buffer(value);
+  }
+
+  if (ArrayBuffer.isView(value) && !Buffer.isBuffer(value)) {
+    return new Buffer(value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength));
+  }
+
+  return value;
+}
+
 function checkDecode(value, hex) {
   var decodedValue = notepack.decode(new Buffer(hex, 'hex'));
-  expect(decodedValue).to.deep.equal(value, 'decode failed');
+  expect(normalizeArrayBuffer(decodedValue)).to.deep.equal(normalizeArrayBuffer(value), 'decode failed');
 }
 
 function checkEncode(value, hex) {
@@ -33,7 +52,7 @@ function check(value, hex) {
   checkDecode(value, hex);
 
   // And full circle for fun
-  expect(notepack.decode(notepack.encode(value))).to.deep.equal(value);
+  expect(normalizeArrayBuffer(notepack.decode(notepack.encode(value)))).to.deep.equal(normalizeArrayBuffer(value));
 }
 
 describe('notepack', function () {
@@ -94,21 +113,57 @@ describe('notepack', function () {
 
   it('ext 8', function () {
     checkDecode([127, new Buffer('hello')], 'c7' + '05' + '7f' + '68656c6c6f');
-    check(Uint8Array.of(1, 2, 3, 4).buffer, 'c7' + '04' + '00' + '01020304');
+
+    var buffer = Uint8Array.of(1, 2, 3, 4).buffer;
+    var length = buffer.byteLength;
+    var hex = 'c7' + '04' + '00' + '01020304';
+
+    // ArrayBuffer
+    check(buffer, hex);
+
+    // Offset ArrayBuffer view
+    buffer = Buffer.concat([ new Buffer([ 0xFF, 0xFF ]), new Buffer(buffer), new Buffer([ 0xFF, 0xFF ]) ]);
+    buffer = new Uint8Array(buffer.buffer, buffer.byteOffset + 2, length);
+
+    check(buffer, hex);
   });
 
   it('ext 16', function () {
     checkDecode([1, new Buffer('a'.repeat(256))], 'c8' + '0100' + '01' + '61'.repeat(256));
+
     var array = new Uint8Array(256);
+    var length = array.byteLength;
+    var hex = 'c8' + '0100' + '00' + '08'.repeat(256);
+
     array.fill(8);
-    check(array.buffer, 'c8' + '0100' + '00' + '08'.repeat(256));
+
+    // ArrayBuffer
+    check(array.buffer, hex);
+
+    // Offset ArrayBuffer view
+    var buffer = Buffer.concat([ new Buffer([ 0xFF, 0xFF ]), new Buffer(array.buffer), new Buffer([ 0xFF, 0xFF ]) ]);
+    array = new Uint8Array(buffer.buffer, buffer.byteOffset + 2, length);
+
+    check(array, hex);
   });
 
   it('ext 32', function () {
     checkDecode([-128, new Buffer('a'.repeat(65536))], 'c9' + '00010000' + '80' + '61'.repeat(65536));
+
     var array = new Uint8Array(65536);
+    var length = array.byteLength;
+    var hex = 'c9' + '00010000' + '00' + '09'.repeat(65536);
+
     array.fill(9);
-    check(array.buffer, 'c9' + '00010000' + '00' + '09'.repeat(65536));
+
+    // ArrayBuffer
+    check(array.buffer, hex);
+
+    // Offset ArrayBuffer view
+    var buffer = Buffer.concat([ new Buffer([ 0xFF, 0xFF ]), new Buffer(array.buffer), new Buffer([ 0xFF, 0xFF ]) ]);
+    array = new Uint8Array(buffer.buffer, buffer.byteOffset + 2, length);
+
+    check(array, hex);
   });
 
   // float 32
