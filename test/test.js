@@ -2,6 +2,7 @@
 
 const notepack = require('../');
 const expect = require('chai').expect;
+const { Int64BE, Uint64BE } = require('int64-buffer');
 
 function array(length) {
   const arr = new Array(length);
@@ -153,6 +154,14 @@ describe('notepack', function () {
     check(Math.pow(2, 63) + 1024, 'cf8000000000000000');
   });
 
+  it('Uint64BE', function () {
+    checkEncode(new Uint64BE(4294967296), 'cf0000000100000000');
+    checkEncode(new Uint64BE(Math.pow(2, 53) - 1), 'cf001fffffffffffff');
+    // unsafe unsigned integer
+    checkEncode(new Uint64BE('18446744073709551615'), 'cfffffffffffffffff');
+    checkEncode(new Uint64BE('18446744073709551614'), 'cffffffffffffffffe');
+  });
+
   // NOTE: We'll always encode a positive number as a uint, but we should be
   // able to decode a positive int value
 
@@ -204,6 +213,21 @@ describe('notepack', function () {
     // unsafe signed integer
     check(-Math.pow(2, 63), 'd38000000000000000');
     check(-Math.pow(2, 63) - 1024, 'd38000000000000000');
+  });
+
+  it('Int64BE', function () {
+    checkEncode(new Int64BE(-2147483649), 'd3ffffffff7fffffff');
+    checkEncode(new Int64BE(-4294967297), 'd3fffffffeffffffff');
+    checkEncode(new Int64BE(-65437650001231), 'd3ffffc47c1c1de2b1');
+    checkEncode(new Int64BE(-1111111111111111), 'd3fffc0d7348ea8e39');
+    checkEncode(new Int64BE(-1532678092380345), 'd3fffa8e0992bfa747');
+    checkEncode(new Int64BE(-4503599627370496), 'd3fff0000000000000');
+    checkEncode(new Int64BE(-7840340234323423), 'd3ffe42540896a3a21');
+    // Minimum safe signed integer
+    checkEncode(new Int64BE(-Math.pow(2, 53) + 1), 'd3ffe0000000000001');
+    // unsafe signed integer
+    checkEncode(new Int64BE('-9223372036854775808'), 'd38000000000000000');
+    checkEncode(new Int64BE('-9223372036854775807'), 'd38000000000000001');
   });
 
   it('fixext 1 / undefined', function () {
