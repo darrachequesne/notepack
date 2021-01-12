@@ -87,6 +87,11 @@ Decoder.prototype._parse = function () {
   var prefix = this._view.getUint8(this._offset++);
   var value, length = 0, type = 0, hi = 0, lo = 0;
 
+  // 0x01 - bigint
+  if (prefix === 0x01) {
+	  return BigInt(this._parse());
+  }
+
   if (prefix < 0xc0) {
     // positive fixint
     if (prefix < 0x80) {

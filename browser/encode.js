@@ -259,6 +259,12 @@ function _encode(bytes, defers, value) {
     bytes.push(0xd4, 0, 0);
     return 3;
   }
+
+  if (type === 'bigint') {
+    bytes.push(0x01);
+    return 1 + _encode( bytes, defers, value.toString() );
+  }
+
   throw new Error('Could not encode');
 }
 
