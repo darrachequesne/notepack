@@ -99,7 +99,7 @@ describe('notepack', function () {
   });
 
   it('ext 16', function () {
-    checkDecode([1, Buffer.from('a'.repeat(256))], 'c8' + '0100' + '01' + '61'.repeat(256));
+    checkDecode([9, Buffer.from('a'.repeat(256))], 'c8' + '0100' + '09' + '61'.repeat(256));
     const array = new Uint8Array(256);
     array.fill(8);
     check(array.buffer, 'c8' + '0100' + '00' + '08'.repeat(256));

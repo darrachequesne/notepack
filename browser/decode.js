@@ -139,16 +139,34 @@ Decoder.prototype._parse = function () {
       length = this._view.getUint8(this._offset);
       type = this._view.getInt8(this._offset + 1);
       this._offset += 2;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
     case 0xc8:
       length = this._view.getUint16(this._offset);
       type = this._view.getInt8(this._offset + 2);
       this._offset += 3;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
     case 0xc9:
       length = this._view.getUint32(this._offset);
       type = this._view.getInt8(this._offset + 4);
       this._offset += 5;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
 
     // float
