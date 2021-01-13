@@ -9,7 +9,7 @@
   "immed"         : true,
   "indent"        : 2,
   "latedef"       : true,
-  "newcap"        : true,
+  "newcap"        : false,
   "noarg"         : true,
   "noempty"       : true,
   "nonew"         : true,
@@ -65,8 +65,8 @@
   "wsh"           : false,
   "yui"           : false,
 
-
   "globals"       : {
-    "expect": true
+    "expect": true,
+    "BigInt": false
   }
 }
