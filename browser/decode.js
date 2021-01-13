@@ -87,11 +87,6 @@ Decoder.prototype._parse = function () {
   var prefix = this._view.getUint8(this._offset++);
   var value, length = 0, type = 0, hi = 0, lo = 0;
 
-  // 0x01 - bigint
-  if (prefix === 0x01) {
-	  return BigInt(this._parse());
-  }
-
   if (prefix < 0xc0) {
     // positive fixint
     if (prefix < 0x80) {
@@ -144,16 +139,34 @@ Decoder.prototype._parse = function () {
       length = this._view.getUint8(this._offset);
       type = this._view.getInt8(this._offset + 1);
       this._offset += 2;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
     case 0xc8:
       length = this._view.getUint16(this._offset);
       type = this._view.getInt8(this._offset + 2);
       this._offset += 3;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
     case 0xc9:
       length = this._view.getUint32(this._offset);
       type = this._view.getInt8(this._offset + 4);
       this._offset += 5;
+
+      // BigInt
+      if (type === 0x01) {
+        return BigInt(this._str(length));
+      }
+
       return [type, this._bin(length)];
 
     // float

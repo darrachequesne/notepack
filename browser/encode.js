@@ -261,8 +261,34 @@ function _encode(bytes, defers, value) {
   }
 
   if (type === 'bigint') {
-    bytes.push(0x01);
-    return 1 + _encode( bytes, defers, value.toString() );
+    value = value.toString();
+
+    length = value.length;
+
+    // ext 8
+    if (length < 0x100) {
+      bytes.push(0xc7, length, 1);
+      size = 3;
+    }
+
+    // ext 16
+    else if (length < 0x10000) {
+      bytes.push(0xc8, length >> 8, length, 1);
+      size = 4;
+    }
+
+    // ext 32
+    else if (length < 0x100000000) {
+      bytes.push(0xc9, length >> 24, length >> 16, length >> 8, length, 1);
+      size = 6;
+    }
+    else {
+      throw new Error('BigInt too large');
+    }
+
+    defers.push({ _str: value, _length: length, _offset: bytes.length });
+
+    return size + length;
   }
 
   throw new Error('Could not encode');
