@@ -83,7 +83,7 @@ function _encode(bytes, defers, value) {
     // TODO: encode to float 32?
 
     // float 64
-    if (Math.floor(value) !== value || !isFinite(value)) {
+    if (value !== (value | 0) || !isFinite(value)) {
       bytes.push(0xcb);
       defers.push({ _float: value, _length: 8, _offset: bytes.length });
       return 9;
