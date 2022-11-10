@@ -2,6 +2,7 @@ const notepack = require('../');
 const msgpackJs = require('msgpack-js');
 const msgpackLite = require('msgpack-lite');
 const msgpack = require('@msgpack/msgpack');
+const msgpackr = require('msgpackr');
 const data = require('./data');
 
 const Benchtable = require('benchtable');
@@ -20,6 +21,9 @@ suite
 })
 .addFunction('@msgpack/msgpack', function (m, js, node, json) {
   msgpack.decode(m);
+})
+.addFunction('msgparck', function (m, js, node, json) {
+  msgpackr.decode(m);
 })
 // Note: JSON encodes buffers as arrays
 .addFunction('JSON.parse (from Buffer)', function (m, js, node, json) {

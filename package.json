@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/darrachequesne/notepack",
   "devDependencies": {
-    "@msgpack/msgpack": "~1.12.0",
+    "@msgpack/msgpack": "^2.8.0",
     "benchmark": "^2.1.2",
     "benchtable": "^0.1.0",
     "chai": "^3.5.0",
@@ -29,6 +29,7 @@
     "mocha": "^3.2.0",
     "msgpack-js": "^0.3.0",
     "msgpack-lite": "^0.1.26",
+    "msgpackr": "^1.7.2",
     "uglify-js": "^3.4.9"
   },
   "scripts": {
