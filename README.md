@@ -4,6 +4,20 @@
 
 A fast [Node.js](http://nodejs.org) implementation of the latest [MessagePack](http://msgpack.org) [spec](https://github.com/msgpack/msgpack/blob/master/spec.md).
 
+Table of contents:
+
+* [Notes](#notes)
+* [Install](#install)
+* [Usage](#usage)
+* [Browser](#browser)
+* [Common questions](#common-questions)
+  * [How to encode custom types?](#how-to-encode-custom-types)
+  * [How to handle BigInt values?](#how-to-handle-bigint-values)
+  * [Handle to handle ES6 Set and Map values?](#handle-to-handle-es6-set-and-map-values)
+  * [Are circular references supported?](#are-circular-references-supported)
+* [Performance](#performance)
+
+
 ## Notes
 
 * `undefined` is encoded as `nil`
@@ -84,6 +98,19 @@ Set.prototype.toJSON = function () {
 Map.prototype.toJSON = function () {
   return [...this];
 }
+```
+
+### Are circular references supported?
+
+No, circular references are currently not supported:
+
+```js
+import { encode } from 'notepack.io';
+
+const a = {};
+a.b = a;
+
+encode(a); // throws "Uncaught RangeError: Maximum call stack size exceeded"
 ```
 
 ## Performance
