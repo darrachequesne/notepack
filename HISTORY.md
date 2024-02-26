@@ -1,10 +1,25 @@
+# History
+
+- [3.0.1](#301-2022-05-22) (May 2022)
+- [**3.0.0**](#300-2022-05-22) (May 2022)
+- [2.3.0](#230-2020-03-15) (Mar 2020)
+- [2.2.0](#220-2018-12-18) (Dec 2018)
+- [2.1.3](#213-2018-05-14) (May 2018)
+- [2.1.2](#212-2017-08-23) (Aug 2017)
+- [2.1.1](#211-2017-08-08) (Aug 2017)
+- [2.1.0](#210-2017-07-31) (Jul 2017)
+- [2.0.1](#201-2017-06-06) (Jun 2017)
+- [**2.0.0**](#200-2017-05-19) (May 2017)
+
+# Release notes
+
 ## [3.0.1](https://github.com/darrachequesne/notepack/compare/3.0.0...3.0.1) (2022-05-22)
 
 The browser bundle was not updated in the previous release.
 
 
 
-# [3.0.0](https://github.com/darrachequesne/notepack/compare/2.3.0...3.0.0) (2022-05-22)
+## [3.0.0](https://github.com/darrachequesne/notepack/compare/2.3.0...3.0.0) (2022-05-22)
 
 
 ### Features
@@ -86,7 +101,7 @@ decode(encode(value));
 // }
 ```
 
-# [2.3.0](https://github.com/darrachequesne/notepack/compare/2.2.0...v2.3.0) (2020-03-15)
+## [2.3.0](https://github.com/darrachequesne/notepack/compare/2.2.0...v2.3.0) (2020-03-15)
 
 
 ### Performance Improvements
@@ -96,11 +111,10 @@ decode(encode(value));
 
 
 
-# [2.2.0](https://github.com/darrachequesne/notepack/compare/2.1.3...2.2.0) (2018-12-18)
+## [2.2.0](https://github.com/darrachequesne/notepack/compare/2.1.3...2.2.0) (2018-12-18)
 
 
 
-<a name="2.1.3"></a>
 ## [2.1.3](https://github.com/darrachequesne/notepack/compare/2.1.2...2.1.3) (2018-05-14)
 
 
@@ -110,7 +124,6 @@ decode(encode(value));
 
 
 
-<a name="2.1.2"></a>
 ## [2.1.2](https://github.com/darrachequesne/notepack/compare/2.1.1...2.1.2) (2017-08-23)
 
 
@@ -120,7 +133,6 @@ decode(encode(value));
 
 
 
-<a name="2.1.1"></a>
 ## [2.1.1](https://github.com/darrachequesne/notepack/compare/2.1.0...2.1.1) (2017-08-08)
 
 
@@ -131,8 +143,7 @@ decode(encode(value));
 
 
 
-<a name="2.1.0"></a>
-# [2.1.0](https://github.com/darrachequesne/notepack/compare/2.0.1...2.1.0) (2017-07-31)
+## [2.1.0](https://github.com/darrachequesne/notepack/compare/2.0.1...2.1.0) (2017-07-31)
 
 
 ### Features
@@ -141,7 +152,6 @@ decode(encode(value));
 
 
 
-<a name="2.0.1"></a>
 ## [2.0.1](https://github.com/darrachequesne/notepack/compare/2.0.0...2.0.1) (2017-06-06)
 
 
@@ -151,8 +161,7 @@ decode(encode(value));
 
 
 
-<a name="2.0.0"></a>
-# [2.0.0](https://github.com/darrachequesne/notepack/compare/1.0.1...2.0.0) (2017-05-19)
+## [2.0.0](https://github.com/darrachequesne/notepack/compare/1.0.1...2.0.0) (2017-05-19)
 
 
 ### Features
