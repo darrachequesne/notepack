@@ -15,6 +15,7 @@ Table of contents:
   * [How to handle BigInt values?](#how-to-handle-bigint-values)
   * [Handle to handle ES6 Set and Map values?](#handle-to-handle-es6-set-and-map-values)
   * [Are circular references supported?](#are-circular-references-supported)
+  * [Why use this library instead of another MessagePack implementation?](#why-use-this-library-instead-of-another-messagepack-implementation)
 * [Performance](#performance)
 
 
@@ -41,10 +42,10 @@ const decoded = decode(encoded); // { foo: 'bar' }
 
 ## Browser
 
-A browser version of notepack is also available (2.0 kB minified/gzipped)
+A browser version of notepack is also available (2.3 kB minified/gzipped)
 
 ```html
-<script src="https://unpkg.com/notepack.io@2.3.0/dist/notepack.min.js"></script>
+<script src="https://unpkg.com/notepack.io@3.0.1/dist/notepack.min.js"></script>
 <script>
   console.log(notepack.decode(notepack.encode([1, '2', new Date()])));
   // [1, "2", Thu Dec 08 2016 00:00:01 GMT+0100 (CET)]
@@ -113,6 +114,18 @@ a.b = a;
 encode(a); // throws "Uncaught RangeError: Maximum call stack size exceeded"
 ```
 
+### Why use this library instead of another MessagePack implementation?
+
+This MessagePack implementation is concise, easy to read and well-tested.
+
+Also, the browser bundle is lighter than most other options:
+
+| Library                  | Bundle size (min+gzip) |
+|--------------------------|------------------------|
+| `notepack.io@3.0.1`      | `2.3 kB`               |
+| `@msgpack/msgpack@2.8.0` | `8.2 kB`               |
+| `msgpackr@1.10.1`        | `10.0 kB`              |
+
 ## Performance
 
 Performance is currently comparable to msgpack-node (which presumably needs optimizing and suffers from JS-native overhead) and is significantly faster than other implementations. Several micro-optimizations are used to improve the performance of short string and Buffer operations.
@@ -151,12 +164,13 @@ Decoding (this will take a while):
 +--------------------------+--------------------+-------------------+-----------------+-------------+
 | @msgpack/msgpack         │ 4,098,968 ops/sec  │ 1,233,911 ops/sec │ 62,498 ops/sec  │ 162 ops/sec |
 +--------------------------+--------------------+-------------------+-----------------+-------------+
-| msgparck                 │ 10,083,227 ops/sec │ 1,990,914 ops/sec │ 102,848 ops/sec │ 422 ops/sec |
+| msgpackr                 │ 10,083,227 ops/sec │ 1,990,914 ops/sec │ 102,848 ops/sec │ 422 ops/sec |
 +--------------------------+--------------------+-------------------+-----------------+-------------+
 | JSON.parse (from Buffer) │ 2,543,430 ops/sec  │ 688,383 ops/sec   │ 50,280 ops/sec  │ 103 ops/sec |
 +--------------------------+--------------------+-------------------+-----------------+-------------+
 * Note that JSON is provided as an indicative comparison only
 ```
+
 ## License
 
 MIT
