@@ -33,10 +33,10 @@ npm install notepack.io
 ## Usage
 
 ```js
-const notepack = require('notepack.io');
+import { encode, decode } from 'notepack.io';
 
-const encoded = notepack.encode({ foo: 'bar'}); // <Buffer 81 a3 66 6f 6f a3 62 61 72>
-const decoded = notepack.decode(encoded); // { foo: 'bar' }
+const encoded = encode({ foo: 'bar'}); // <Buffer 81 a3 66 6f 6f a3 62 61 72>
+const decoded = decode(encoded); // { foo: 'bar' }
 ```
 
 ## Browser
