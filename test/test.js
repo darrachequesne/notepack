@@ -115,6 +115,13 @@ describe('notepack', function () {
     checkDecode([-128, Buffer.from('a'.repeat(65536))], 'c9' + '00010000' + '80' + '61'.repeat(65536));
   });
 
+  it('does not allocate an arraybuffer larger than the buffer', function () {
+    // ext 32, type 0 (arraybuffer), length 0x40000000 (1 GiB) but no data: a
+    // 6-byte payload must not trigger a 1 GiB allocation.
+    const malicious = Buffer.from('c9' + '40000000' + '00', 'hex');
+    expect(function () { notepack.decode(malicious); }).to.throw(/length exceeds buffer/);
+  });
+
   // float 32
   // JavaScript doesn't support single precision floating point numbers
 
