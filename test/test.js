@@ -3,6 +3,7 @@
 /* global BigInt */
 
 const notepack = require('../');
+const msgpack = require('@msgpack/msgpack');
 const expect = require('chai').expect;
 
 function array(length) {
@@ -37,6 +38,8 @@ function check(value, hex) {
 
   // And full circle for fun
   expect(notepack.decode(notepack.encode(value))).to.deep.equal(value);
+  // check compatibility with @msgpack/msgpack
+  expect(notepack.decode(Buffer.from(msgpack.encode(value)))).to.deep.equal(value);
 }
 
 describe('notepack', function () {
@@ -135,6 +138,8 @@ describe('notepack', function () {
   it('float 64', function () {
     check(1.1, 'cb' + '3ff199999999999a');
     check(1234567891234567.5, 'cb' + '43118b54f26ebc1e');
+    check(3.5522E35, 'cb' + '47511a6caed9c589');
+    check(-3.5522E35, 'cb' + 'c7511a6caed9c589');
     check(Infinity, 'cb' + '7ff0000000000000');
     check(-Infinity, 'cb' + 'fff0000000000000');
     check(NaN, 'cb' + '7ff8000000000000');
