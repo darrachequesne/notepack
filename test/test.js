@@ -119,7 +119,31 @@ describe('notepack', function () {
     // ext 32, type 0 (arraybuffer), length 0x40000000 (1 GiB) but no data: a
     // 6-byte payload must not trigger a 1 GiB allocation.
     const malicious = Buffer.from('c9' + '40000000' + '00', 'hex');
-    expect(function () { notepack.decode(malicious); }).to.throw(/length exceeds buffer/);
+    expect(function () { notepack.decode(malicious); }).to.throw(/Invalid length/);
+  });
+
+  it('throws for invalid bin length', function () {
+    // bin 8, length 255, but only 0 bytes follow
+    const malicious = Buffer.from('c4ff', 'hex');
+    expect(function () { notepack.decode(malicious); }).to.throw(/Invalid length/);
+  });
+
+  it('throws for invalid str length', function () {
+    // str 8, length 255, but only 0 bytes follow
+    const malicious = Buffer.from('d9ff', 'hex');
+    expect(function () { notepack.decode(malicious); }).to.throw(/Invalid length/);
+  });
+
+  it('throws for invalid array length', function () {
+    // array 16, length 0xFFFF, but only 0 bytes follow
+    const malicious = Buffer.from('dcffff', 'hex');
+    expect(function () { notepack.decode(malicious); }).to.throw(/Invalid length/);
+  });
+
+  it('throws for invalid map length', function () {
+    // map 16, length 0xFFFF, but only 0 bytes follow
+    const malicious = Buffer.from('deffff', 'hex');
+    expect(function () { notepack.decode(malicious); }).to.throw(/Invalid length/);
   });
 
   // float 32

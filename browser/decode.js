@@ -54,7 +54,14 @@ function utf8Read(view, offset, length) {
   return string;
 }
 
+Decoder.prototype._checkLength = function (length) {
+  if (this._offset + length > this._buffer.byteLength) {
+    throw new Error('Invalid length');
+  }
+};
+
 Decoder.prototype._array = function (length) {
+  this._checkLength(length);
   var value = new Array(length);
   for (var i = 0; i < length; i++) {
     value[i] = this._parse();
@@ -63,6 +70,7 @@ Decoder.prototype._array = function (length) {
 };
 
 Decoder.prototype._map = function (length) {
+  this._checkLength(length);
   var key = '', value = {};
   for (var i = 0; i < length; i++) {
     key = this._parse();
@@ -72,12 +80,14 @@ Decoder.prototype._map = function (length) {
 };
 
 Decoder.prototype._str = function (length) {
+  this._checkLength(length);
   var value = utf8Read(this._view, this._offset, length);
   this._offset += length;
   return value;
 };
 
 Decoder.prototype._bin = function (length) {
+  this._checkLength(length);
   var value = this._buffer.slice(this._offset, this._offset + length);
   this._offset += length;
   return value;
