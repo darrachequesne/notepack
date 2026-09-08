@@ -2,6 +2,8 @@
 
 var TIMESTAMP32_MAX_SEC = 0x100000000 - 1; // 32-bit unsigned int
 var TIMESTAMP64_MAX_SEC = 0x400000000 - 1; // 34-bit unsigned int
+var UINT64_MAX = Math.pow(2, 64);
+var INT64_MIN = -Math.pow(2, 63);
 
 function utf8Write(view, offset, str) {
   var c = 0;
@@ -86,7 +88,7 @@ function _encode(bytes, defers, value) {
     // TODO: encode to float 32?
 
     // float 64
-    if (Math.floor(value) !== value || !isFinite(value)) {
+    if (Math.floor(value) !== value || !isFinite(value) || value >= UINT64_MAX || value < INT64_MIN) {
       bytes.push(0xcb);
       defers.push({ _float: value, _length: 8, _offset: bytes.length });
       return 9;
