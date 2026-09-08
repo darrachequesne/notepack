@@ -71,7 +71,7 @@ Decoder.prototype._array = function (length) {
 
 Decoder.prototype._map = function (length) {
   this._checkLength(length);
-  var key = '', value = {};
+  var key = '', value = Object.create(null);
   for (var i = 0; i < length; i++) {
     key = this._parse();
     value[key] = this._parse();
